@@ -1,0 +1,7 @@
+.header-container {
+    width: 100%; /* Full width */
+    background-color: #333; /* Background color */
+    color: #fff; /* Text color */
+    padding: 20px; /* Padding around content */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
