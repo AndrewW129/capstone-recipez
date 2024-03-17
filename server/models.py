@@ -5,7 +5,6 @@ from config import db, bcrypt
 from datetime import datetime
 import ipdb
 
-
 class User(db.Model, SerializerMixin):
   __tablename__ = 'users'
   # Attributes
@@ -23,15 +22,18 @@ class User(db.Model, SerializerMixin):
   # Validation
   @validates('username')
   def validate_username(self, key, username):
-    user = User.query.filter_by(username=username).first()
-    if user:
-      raise ValueError(f'Username is taken, {key}')
-
+    if username:
+      return username
+    else:
+      raise ValueError('Username is required')
+    
   @validates('email')
   def validate_email(self, key, email):
-    user = User.query.filter_by(email=email).first()
-    if user:
-      raise ValueError(f'Email is taken, {key}')
+    if email:
+      return email
+    else:
+      raise ValueError('Email is required')
+  
   # Auth for Login/Signup
   @hybrid_property
   def password_hash(self):
@@ -39,11 +41,12 @@ class User(db.Model, SerializerMixin):
   
   @password_hash.setter
   def password_hash(self, password):
+    # ipdb.set_trace()
     password_hash = bcrypt.generate_password_hash(password.encode('utf-8'))
     self._password_hash = password_hash.decode('utf-8')
 
   def authenticate(self, password):
-    return bcrypt.check_password_hash(self._password_hash, password.encode('utf8'))
+    return bcrypt.check_password_hash(self._password_hash, password.encode('utf-8'))
 
 class Recipe(db.Model, SerializerMixin):
   __tablename__ ='recipes'
@@ -79,11 +82,11 @@ class Ingredient(db.Model, SerializerMixin):
   # Validation
   @validates('name')
   def validate_name(self, key, name):
-    ingredient = Ingredient.query.filter_by(name=name).first()
-    if ingredient:
-      raise ValueError(f'Ingredient exsists, {key}')
+    if name:
+      return name
+    else: 
+      raise ValueError(f'Name is required, {key}')
     
-
 class RecipeIngredient(db.Model, SerializerMixin):
   __tablename__ ='recipe_ingredients'
   # Attributes
@@ -102,11 +105,15 @@ class RecipeIngredient(db.Model, SerializerMixin):
   def validate_recipe_id(self, key, recipe_id):
     if not recipe_id:
       raise ValueError(f'Recipe ID is required, {key}')
+    else:
+      return recipe_id
     
   @validates('ingredient_id')
   def validate_ingredient_id(self, key, ingredient_id):
     if not ingredient_id:
       raise ValueError(f'Ingredient ID is required, {key}')
+    else:
+      return ingredient_id
     
 class UserRecipe(db.Model, SerializerMixin):
   __tablename__ = 'user_recipes'
@@ -126,8 +133,12 @@ class UserRecipe(db.Model, SerializerMixin):
   def validate_user_id(self, key, user_id):
     if not user_id:
       raise ValueError(f'User ID is required, {key}')
+    else:
+      return user_id
     
   @validates('recipe_id')
   def validate_recipe_id(self, key, recipe_id):
     if not recipe_id:
       raise ValueError(f'Recipe ID is required, {key}')
+    else:
+      return recipe_id

@@ -3,40 +3,42 @@ from flask_restful import Resource
 from models import db, User, Recipe, Ingredient, RecipeIngredient, UserRecipe
 # Local imports
 from config import app, api
-
+import ipdb
 
 @app.route("/")
 def index():
     return "<h1>Project Server</h1><p>Change the endpoint to see data.</p>"
-
 # RESTful routes
 # '/users'
 class Users(Resource):
-    def get(self):
-        users = [user.to_dict() for user in User.query.all()]
-        if not users:
-           response = make_response({'error': 'No users found'}, 404)    
-        response = make_response(users, 200)
-        return response
+   def get(self):
+      users = [user.to_dict() for user in User.query.all()]
+      if not users:
+         response = make_response({'error': 'No users found'}, 404) 
+         return response   
+      response = make_response(users, 200)
+      return response
     
-    def post(self):
-       req_data = request.get_json()
-       try:
-          new_user = User(
-             username=req_data['username'],
-             email=req_data['email'],
-             password_hash=req_data['password']
-          )
-       except Exception as e:
-          response = make_response({'error': [e.args]}, 400)
-
-       db.session.add(new_user)
-       db.session.commit()
+   def post(self):
+      req_data = request.get_json()
+      try:
+         # ipdb.set_trace()
+         new_user = User(
+            username=req_data['username'],
+            email=req_data["email"],
+            password_hash=req_data["password"]
+         )
+         # ipdb.set_trace()
+         db.session.add(new_user)
+         db.session.commit()
+      except Exception as e:
+         response = make_response({'error': [e.args]}, 400)
+         return response
       #  session['user_id'] = new_user.id instead of logging in on signup they will be redirected to login
 
-       new_user_dict = new_user.to_dict()
-       response = make_response(new_user_dict, 201)
-       return response
+      new_user_dict = new_user.to_dict()
+      response = make_response(new_user_dict, 201)
+      return response
 
 # '/users/<int:id>
 class UserByID(Resource):
@@ -44,6 +46,7 @@ class UserByID(Resource):
        user = User.query.filter_by(id=id).first()
        if not user:
            response = make_response({'error': 'User Not Found'}, 404)
+           return response
        response = make_response(user.to_dict(), 200)
        return response
     
@@ -57,6 +60,7 @@ class UserByID(Resource):
              setattr(user, key, value)
        except Exception as e:
           response = make_response({'error': [e.args]}, 400)
+          return response
        response = make_response(user.to_dict(), 200)
         
        db.session.commit()
@@ -67,6 +71,7 @@ class UserByID(Resource):
         user = User.query.filter_by(id=id).first()
         if not user:
             response = make_response({'error': 'User not found'}, 404)
+            return response
 
         db.session.delete(user)
         db.session.commit()
@@ -78,7 +83,8 @@ class Recipes(Resource):
     def get(self):
         recipes = [recipe.to_dict() for recipe in Recipe.query.all()]
         if not recipes:
-           response = make_response({'error': 'No recipes found'}, 404)    
+           response = make_response({'error': 'No recipes found'}, 404) 
+           return response   
         response = make_response(recipes, 200)
         return response
     
@@ -102,6 +108,7 @@ class RecipeById(Resource):
        recipe = Recipe.query.filter_by(id=id).first()
        if not recipe:
            response = make_response({'error': 'Recipe Not Found'}, 404)
+           return response
        response = make_response(recipe.to_dict(), 200)
        return response
     
@@ -109,12 +116,14 @@ class RecipeById(Resource):
        recipe = Recipe.query.filter_by(id=id).first()
        if not recipe:
           response = make_response({'error': 'Recipe not found'}, 404)
+          return response
        req_data = request.get_json()
        try:
          for key, value in req_data.items():
              setattr(recipe, key, value)
        except Exception as e:
           response = make_response({'error': [e.args]}, 400)
+          return response
        response = make_response(recipe.to_dict(), 200)
         
        db.session.commit()
@@ -125,7 +134,8 @@ class Ingredients(Resource):
     def get(self):
         ingredients = [ingredient.to_dict() for ingredient in Ingredient.query.all()]
         if not ingredients:
-           response = make_response({'error': 'No ingredients found'}, 404)    
+           response = make_response({'error': 'No ingredients found'}, 404)  
+           return response  
         response = make_response(ingredients, 200)
         return response
     
@@ -148,6 +158,7 @@ class IngredientByID(Resource):
        ingredient = Ingredient.query.filter_by(id=id).first()
        if not ingredient:
            response = make_response({'error': 'Ingredient Not Found'}, 404)
+           return response
        response = make_response(ingredient.to_dict(), 200)
        return response
 
@@ -156,6 +167,7 @@ class RecipeIngrdients(Resource):
        recipe_ingredients = [recipe_ingredient.to_dict() for recipe_ingredient in RecipeIngredient.query.all()]
        if not recipe_ingredients:
            response = make_response({'error': 'No recipe ingredients found'}, 404)
+           return response
        response = make_response(recipe_ingredients, 200)
        return response
     
@@ -178,6 +190,7 @@ class RecipeIngredientByID(Resource):
        recipe_ingredient = RecipeIngredient.query.filter_by(id=id).first()
        if not recipe_ingredient:
            response = make_response({'error': 'Recipe Ingredient Not Found'}, 404)
+           return response
        response = make_response(recipe_ingredient.to_dict(), 200)
        return response
     
@@ -186,6 +199,7 @@ class UserRecipes(Resource):
        user_recipes = [user_recipe.to_dict() for user_recipe in UserRecipe.query.all()]
        if not user_recipes:
            response = make_response({'error': 'No user recipes found'}, 404)
+           return response
        response = make_response(user_recipes, 200)
        return response
     
@@ -208,11 +222,10 @@ class UserRecipeByID(Resource):
        user_recipe = UserRecipe.query.filter_by(id=id).first()
        if not user_recipe:
            response = make_response({'error': 'User Recipe Not Found'}, 404)
+           return response
        response = make_response(user_recipe.to_dict(), 200)
        return response
        
-
-
 # adding routes to api
 api.add_resource(Users, '/users', '/signup')
 api.add_resource(UserByID, '/users/<int:id>')
@@ -225,7 +238,6 @@ api.add_resource(RecipeIngredientByID, '/recipe_ingredients/<int:id>')
 api.add_resource(UserRecipes, '/user_recipes')
 api.add_resource(UserRecipeByID, '/user_recipes/<int:id>')
 
-
 # Non-RESTful routes
 @app.route('/login', methods=['POST'])
 def login():
@@ -235,6 +247,7 @@ def login():
       session['user_id'] = user.id # Logs user in
    else:
       response = make_response({'error': 'Invalid Username or Password'}, 404)
+      return response
    response = make_response(user.to_dict(), 200)
    return response
 
@@ -243,6 +256,7 @@ def authorized():
    user = User.query.filter_by(id=session.get('user_id')).first()
    if not user:
       response = make_response({'error': 'User not found'}, 404)
+      return response
    response = make_response(user.to_dict(), 200)
    return response
 
