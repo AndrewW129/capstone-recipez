@@ -1,7 +1,5 @@
-// import { useNavigate } from "react-router-dom";
-
 function Logout() {
-  return <div>Logout</div>;
+  return <div>Peek-A-Boo</div>;
 }
 
 export default Logout;

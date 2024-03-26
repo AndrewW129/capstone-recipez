@@ -26,19 +26,20 @@ class Users(Resource):
          new_user = User(
             username=req_data['username'],
             email=req_data["email"],
+            profile_image=req_data["profile_image"],
             password_hash=req_data["password"]
          )
          # ipdb.set_trace()
          db.session.add(new_user)
          db.session.commit()
+         new_user_dict = new_user.to_dict()
+         response = make_response(new_user_dict, 201)
+         session['user_id'] = new_user.id # instead of logging in on signup they will be redirected to login
+         return response
       except Exception as e:
          response = make_response({'error': [e.args]}, 400)
          return response
-      #  session['user_id'] = new_user.id instead of logging in on signup they will be redirected to login
 
-      new_user_dict = new_user.to_dict()
-      response = make_response(new_user_dict, 201)
-      return response
 
 # '/users/<int:id>
 class UserByID(Resource):
@@ -58,14 +59,14 @@ class UserByID(Resource):
        try:
          for key, value in req_data.items():
              setattr(user, key, value)
+         response = make_response(user.to_dict(), 200)
+         
+         db.session.commit()
+
+         return response 
        except Exception as e:
           response = make_response({'error': [e.args]}, 400)
           return response
-       response = make_response(user.to_dict(), 200)
-        
-       db.session.commit()
-
-       return response 
 
     def delete(self, id):
         user = User.query.filter_by(id=id).first()
@@ -96,12 +97,15 @@ class Recipes(Resource):
              category=req_data['category'],
              instructions=req_data['instructions']
           )
+          db.session.add(new_recipe)
+          db.session.commit()
+          new_recipe_dict = new_recipe.to_dict()
+          response = make_response(new_recipe_dict, 201)
+          return response
        except Exception as e:
           response = make_response({'error': [e.args]}, 400)
           return response
 
-       db.session.add(new_recipe)
-       db.session.commit()
 # '/recipes/<int:id>'
 class RecipeById(Resource):
     def get(self, id):
@@ -121,14 +125,14 @@ class RecipeById(Resource):
        try:
          for key, value in req_data.items():
              setattr(recipe, key, value)
+         response = make_response(recipe.to_dict(), 200)
+         
+         db.session.commit()
+
+         return response
        except Exception as e:
           response = make_response({'error': [e.args]}, 400)
           return response
-       response = make_response(recipe.to_dict(), 200)
-        
-       db.session.commit()
-
-       return response
     
 class Ingredients(Resource):
     def get(self):
@@ -144,14 +148,18 @@ class Ingredients(Resource):
        try:
           new_ingredient = Ingredient(
              name=req_data['name'],
-             ingredient_type=req_data['ingredient_type']
+             ingredient_type=req_data['ingredient_type'],
+             ingredient_image=req_data['ingredient_image']
           )
+          db.session.add(new_ingredient)
+          db.session.commit()
+
+          response = make_response(new_ingredient.to_dict(), 200)
+          return response
        except Exception as e:
           response = make_response({'error': [e.args]}, 400)
           return response
 
-       db.session.add(new_ingredient)
-       db.session.commit()
 
 class IngredientByID(Resource):
     def get(self, id):
@@ -178,12 +186,15 @@ class RecipeIngrdients(Resource):
              recipe_id=req_data['recipe_id'],
              ingredient_id=req_data['ingredient_id']
           )
+          db.session.add(new_recipe_ingredient)
+          db.session.commit()
+          new_recipe_ingredient_dict = new_recipe_ingredient.to_dict()
+          response = make_response(new_recipe_ingredient_dict, 201)
+          return response
        except Exception as e:
           response = make_response({'error': [e.args]}, 400)
           return response
 
-       db.session.add(new_recipe_ingredient)
-       db.session.commit()
 
 class RecipeIngredientByID(Resource):
     def get(self, id):
@@ -210,12 +221,15 @@ class UserRecipes(Resource):
              user_id=req_data['user_id'],
              recipe_id=req_data['recipe_id']
           )
+          db.session.add(new_user_recipe)
+          db.session.commit()
+          new_user_recipe_dict = new_user_recipe.to_dict()
+          response = make_response(new_user_recipe_dict, 200)
+          return response
        except Exception as e:
           response = make_response({'error': [e.args]}, 400)
           return response
 
-       db.session.add(new_user_recipe)
-       db.session.commit()
 
 class UserRecipeByID(Resource):
     def get(self, id):
@@ -225,6 +239,16 @@ class UserRecipeByID(Resource):
            return response
        response = make_response(user_recipe.to_dict(), 200)
        return response
+
+# class CheckSession(Resource):
+    
+#     def get(self):
+#         user = User.query.filter(User.id == session.get('user_id')).first()
+#         if not user:
+#             return make_response({'error': "Unauthorized: you must be logged in to make that request"}, 401)
+#         else:
+#             return make_response(user.to_dict(), 200)
+
        
 # adding routes to api
 api.add_resource(Users, '/users', '/signup')
@@ -237,6 +261,7 @@ api.add_resource(RecipeIngrdients, '/recipe_ingredients')
 api.add_resource(RecipeIngredientByID, '/recipe_ingredients/<int:id>')
 api.add_resource(UserRecipes, '/user_recipes')
 api.add_resource(UserRecipeByID, '/user_recipes/<int:id>')
+# api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 
 # Non-RESTful routes
 @app.route('/login', methods=['POST'])
@@ -245,11 +270,11 @@ def login():
     # not handling many requests so can be done this way.
    if user and user.authenticate(request.get_json()['password']):
       session['user_id'] = user.id # Logs user in
+      response = make_response(user.to_dict(), 200)
+      return response
    else:
       response = make_response({'error': 'Invalid Username or Password'}, 404)
       return response
-   response = make_response(user.to_dict(), 200)
-   return response
 
 @app.route('/authorized')
 def authorized():
@@ -262,7 +287,7 @@ def authorized():
 
 @app.route('/logout', methods=['DELETE'])
 def logout():
-   session['user_id'] = None
+   session.clear()
    response = make_response({}, 204)
    return response
 

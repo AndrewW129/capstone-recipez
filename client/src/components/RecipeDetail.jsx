@@ -1,9 +1,12 @@
+import RecipeInfo from "./RecipeInfo";
 
-
-function RecipeDetail() {
+function RecipeDetail({ selectedRecipe }) {
+  console.log(selectedRecipe);
   return (
-    <div>RecipeDetail</div>
-  )
+    <div>
+      <RecipeInfo recipe={selectedRecipe} />
+    </div>
+  );
 }
 
-export default RecipeDetail
+export default RecipeDetail;
