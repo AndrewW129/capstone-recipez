@@ -114,6 +114,7 @@ function UserForm() {
           <button type="submit">Update Profile</button>
         </form>
       </div>
+      <button onClick={handleClick}>Delete Account</button>
     </div>
   );
 }
