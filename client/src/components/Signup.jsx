@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { UserContext } from "../context/UserContext.jsx";
+import { Button, Header, Form, FormField, FormInput } from "semantic-ui-react";
 import * as yup from "yup";
 
 function Signup() {
@@ -65,9 +66,21 @@ function Signup() {
     },
   });
   return (
-    <div className="component-container">
-      <div className="form-container">
-        <h2>Create an Account!</h2>
+    <div
+      style={{
+        marginTop: "50px",
+        textAlign: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "75%",
+          display: "flex",
+          flexDirection: "column",
+          paddingLeft: "450px",
+        }}
+      >
+        <Header as="h2">Create An Account!</Header>
         {formik.errors &&
           Object.values(formik.errors).map((error, index) => (
             <p className="error-message" key={index}>
@@ -75,43 +88,68 @@ function Signup() {
               {error}
             </p>
           ))}
-        <form className="form" onSubmit={formik.handleSubmit}>
-          <label>Username:</label>
-          <input
-            type="text"
-            name="username"
-            value={formik.values.username}
-            placeholder="Username..."
-            onChange={formik.handleChange}
-          />
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formik.values.password}
-            placeholder="Password..."
-            onChange={formik.handleChange}
-          />
-          <label>Profile Picture:</label>
-          <input
-            type="text"
-            name="profile_image"
-            value={formik.values.profile_image}
-            placeholder="Profile Picture..."
-            onChange={formik.handleChange}
-          />
-          <label>Email:</label>
-          <input
-            type="text"
-            name="email"
-            value={formik.values.email}
-            placeholder="Email..."
-            onChange={formik.handleChange}
-          />
-          <button type="submit">Sign Up</button>
-        </form>
-        <p>Already have an account?</p>
-        <button onClick={handleClick}>go to login</button>
+        <Form onSubmit={formik.handleSubmit}>
+          <FormField>
+            <FormInput
+              label="Username:"
+              type="text"
+              name="username"
+              value={formik.values.username}
+              placeholder="Username..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <FormField>
+            <FormInput
+              label="Password:"
+              type="password"
+              name="password"
+              value={formik.values.password}
+              placeholder="Password..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <FormField>
+            <FormInput
+              label="Profile Picture:"
+              type="text"
+              name="profile_image"
+              value={formik.values.profile_image}
+              placeholder="Profile Picture..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <FormField>
+            <FormInput
+              label="Email:"
+              type="text"
+              name="email"
+              value={formik.values.email}
+              placeholder="Email..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <Button color="green" type="submit">
+            Sign Up
+          </Button>
+        </Form>
+        <p
+          style={{
+            marginTop: "10px",
+          }}
+        >
+          Already have an account?
+        </p>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Button color="black" onClick={handleClick}>
+            go to login
+          </Button>
+        </div>
       </div>
     </div>
   );

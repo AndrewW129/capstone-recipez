@@ -3,6 +3,7 @@ import { RecipeIngredientContext } from "../context/RecipeIngredientContext.jsx"
 import RecipeList from "./RecipeList.jsx";
 import RecipeDetail from "./RecipeDetail.jsx";
 import RecipeForm from "./RecipeForm.jsx";
+import { Header, Container } from "semantic-ui-react";
 
 function MainContent() {
   const context = useContext(RecipeIngredientContext);
@@ -11,7 +12,12 @@ function MainContent() {
     context.setRecipeIngredients([...recipe_ingredients], recipe_ingredients);
   };
 
-  const [selectedRecipe, setSelectedRecipe] = useState({});
+  const [selectedRecipe, setSelectedRecipe] = useState({
+    title: "Recipe Title",
+    category: "Category",
+    recipe_image: "https://www.happycow.net/img/recipe-cutlery.jpg",
+    instructions: "Instructions",
+  });
 
   useEffect(() => {
     fetchRecipes();
@@ -27,25 +33,28 @@ function MainContent() {
     });
   };
 
-  // const setRecipeIngredients = (recipe_ingredients) =>
-  //   context.setRecipeIngredients([...recipe_ingredients], recipe_ingredients);
-
   const changeSelectedRecipe = (recipe) => {
     setSelectedRecipe(recipe);
   };
-  //   function addRecipe(recipe) {
-  //     console.log(recipe);
-  //   }
 
   return (
     <div>
-      MainContent
-      <RecipeList
-        onRecipeSelection={changeSelectedRecipe}
-        recipeIngredients={recipeIngredients}
-      />
-      <RecipeDetail selectedRecipe={selectedRecipe} />
-      <RecipeForm />
+      <Header dividing as="h1">
+        Recipe Detail
+      </Header>
+      <Container>
+        <RecipeDetail selectedRecipe={selectedRecipe} />
+      </Container>
+      <Header dividing as="h2">
+        Recipez
+      </Header>
+      <div style={{ display: "flex" }}>
+        <RecipeList
+          onRecipeSelection={changeSelectedRecipe}
+          recipeIngredients={recipeIngredients}
+        />
+        <RecipeForm />
+      </div>
     </div>
   );
 }

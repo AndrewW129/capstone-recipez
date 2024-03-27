@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext.jsx";
+import { Container, Header } from "semantic-ui-react";
 import UserInfo from "./UserInfo.jsx";
 import UserCollection from "./UserCollection.jsx";
-import UserRecipes from "./UserRecipes.jsx";
 import UserForm from "./UserForm.jsx";
 
 function Profile() {
@@ -15,11 +15,17 @@ function Profile() {
 
   return (
     <div>
-      Profile
-      <div>
+      <Header dividing as="h1">
+        Account Information
+      </Header>
+      <Container>
         <UserInfo />
+      </Container>
+      <Header dividing as="h1">
+        Your Recipez
+      </Header>
+      <div style={{ display: "flex" }}>
         <UserCollection />
-        <UserRecipes />
         <UserForm />
       </div>
     </div>

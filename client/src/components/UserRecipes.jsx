@@ -1,14 +1,24 @@
+import { Card, CardContent, Header, Image } from "semantic-ui-react";
+
 function UserRecipes({ recipe }) {
-  // console.log(recipe);
   if (recipe === undefined) {
     <div>Undefined</div>;
   } else {
     return (
-      <div>
-        <h1>{recipe.recipes.title}</h1>
-        <p>{recipe.recipes.category}</p>
-        <img src={recipe.recipes.recipe_image} alt={recipe.recipes.category} />
-      </div>
+      <Card raised>
+        <CardContent>
+          <Header as="h2">{recipe.recipes.title}</Header>
+          <p>{recipe.recipes.category}</p>
+          <Image
+            rounded
+            bordered
+            src={recipe.recipes.recipe_image}
+            alt={recipe.recipes.category}
+          />
+          <Header as="h4">Instructions:</Header>
+          <p>{recipe.recipes.instructions}</p>
+        </CardContent>
+      </Card>
     );
   }
   return <div>Recipe Item</div>;

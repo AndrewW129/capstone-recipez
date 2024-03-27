@@ -1,18 +1,17 @@
 import { useEffect, useContext } from "react";
 import { IngredientContext } from "../context/IngredientContext.jsx";
+import { Container } from "semantic-ui-react";
 import IngredientList from "./IngredientList.jsx";
 import IngredientForm from "./IngredientForm.jsx";
 
 function Ingredients() {
   const context = useContext(IngredientContext);
   const { ingredients, setIngredients } = context;
-  // console.log(ingredients);
 
   const fetchIngredients = () => {
     fetch("http://127.0.0.1:5555/ingredients").then((r) => {
       if (r.ok) {
         r.json().then((ingredients) => {
-          // console.log(ingredients);
           setIngredients([...ingredients], ingredients);
         });
       } else {
@@ -27,9 +26,10 @@ function Ingredients() {
 
   return (
     <div>
-      Ingredients
+      <Container>
+        <IngredientForm />
+      </Container>
       <IngredientList />
-      <IngredientForm />
     </div>
   );
 }

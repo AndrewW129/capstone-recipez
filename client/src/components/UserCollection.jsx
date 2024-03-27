@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
+import { CardGroup } from "semantic-ui-react";
 import UserRecipes from "./UserRecipes";
 
 function UserCollection() {
@@ -7,7 +8,6 @@ function UserCollection() {
     fetch("http://127.0.0.1:5555/user_recipes").then((r) => {
       if (r.ok) {
         r.json().then((data) => {
-          // console.log(data);
           updateRecipes(data);
         });
       }
@@ -18,8 +18,6 @@ function UserCollection() {
   }, []);
 
   const [recipes, setRecipes] = useState([]);
-
-  // console.log(recipes);
 
   const context = useContext(UserContext);
   const user = context.user;
@@ -34,11 +32,16 @@ function UserCollection() {
   };
 
   return (
-    <div>
-      Recipe Collection
-      {recipes.map((recipe) => {
-        return <UserRecipes key={recipe.id} recipe={recipe} />;
-      })}
+    <div
+      style={{
+        width: "50%",
+      }}
+    >
+      <CardGroup itemsPerRow={2}>
+        {recipes.map((recipe) => {
+          return <UserRecipes key={recipe.id} recipe={recipe} />;
+        })}
+      </CardGroup>
     </div>
   );
 }

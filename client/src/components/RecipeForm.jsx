@@ -1,12 +1,20 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
+import { Header, Button, Form, FormField, FormInput } from "semantic-ui-react";
 import * as yup from "yup";
 
 function RecipeForm() {
+  const [form, setForm] = useState(false);
+
   const navigate = useNavigate();
 
   const handleReset = () => {
     formik.resetForm();
+  };
+
+  const handleClick = () => {
+    setForm(!form);
   };
 
   const updateDisplay = (data) => {
@@ -70,10 +78,29 @@ function RecipeForm() {
       });
     },
   });
-  return (
-    <div className="component-container">
-      <div className="form-container">
-        <h2>Add A Recipe!</h2>
+
+  return !form ? (
+    <div style={{ textAlign: "center", width: "50%" }}>
+      <Button color="green" onClick={handleClick}>
+        Add A Recipe!
+      </Button>
+    </div>
+  ) : (
+    <div
+      style={{
+        textAlign: "center",
+        width: "50%",
+      }}
+    >
+      <div
+        style={{
+          width: "75%",
+          display: "flex",
+          flexDirection: "column",
+          paddingLeft: "210px",
+        }}
+      >
+        <Header as="h2">Add A Recipe!</Header>
         {formik.errors &&
           Object.values(formik.errors).map((error, index) => (
             <p className="error-message" key={index}>
@@ -81,42 +108,55 @@ function RecipeForm() {
               {error}
             </p>
           ))}
-        <form className="form" onSubmit={formik.handleSubmit}>
-          <label>Title:</label>
-          <input
-            type="text"
-            name="title"
-            value={formik.values.title}
-            placeholder="Title..."
-            onChange={formik.handleChange}
-          />
-          <label>Category:</label>
-          <input
-            type="text"
-            name="category"
-            value={formik.values.category}
-            placeholder="Category..."
-            onChange={formik.handleChange}
-          />
-          <label>Recipe Picture:</label>
-          <input
-            type="text"
-            name="recipe_image"
-            value={formik.values.recipe_image}
-            placeholder="Recipe Picture..."
-            onChange={formik.handleChange}
-          />
-          <label>Instructions:</label>
-          <input
-            type="text"
-            name="instructions"
-            value={formik.values.instructions}
-            placeholder="Instructions..."
-            onChange={formik.handleChange}
-          />
-          <button type="submit">Add Recipe</button>
-        </form>
+        <Form size="large" onSubmit={formik.handleSubmit}>
+          <FormField>
+            <FormInput
+              label="Title:"
+              type="text"
+              name="title"
+              value={formik.values.title}
+              placeholder="Title..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <FormField>
+            <FormInput
+              label="Category:"
+              type="text"
+              name="category"
+              value={formik.values.category}
+              placeholder="Category..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <FormField>
+            <FormInput
+              label="Recipe Picture:"
+              type="text"
+              name="recipe_image"
+              value={formik.values.recipe_image}
+              placeholder="Recipe Picture..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <FormField>
+            <FormInput
+              label="Instructions:"
+              type="text"
+              name="instructions"
+              value={formik.values.instructions}
+              placeholder="Instructions..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <Button color="green" type="submit">
+            Add Recipe
+          </Button>
+        </Form>
       </div>
+      <Button style={{ marginTop: "10px" }} color="black" onClick={handleClick}>
+        Hide Form
+      </Button>
     </div>
   );
 }

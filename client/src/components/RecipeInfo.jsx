@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext.jsx";
+import { Header, Button } from "semantic-ui-react";
 
 function RecipeInfo({ recipe }) {
   const context = useContext(UserContext);
@@ -31,13 +32,22 @@ function RecipeInfo({ recipe }) {
   };
 
   return (
-    <div>
-      RecipeInfo
-      <h1>{recipe.title}</h1>
+    <div style={{ textAlign: "center" }}>
+      <Header as="h2">{recipe.title}</Header>
       <p>{recipe.category}</p>
-      <img src={recipe.recipe_image} alt={recipe.category} />
-      <h2>{recipe.ingredients}</h2>
-      <button onClick={handleClick}>Add to Collection</button>
+      <img
+        style={{
+          width: "500px",
+          height: "auto",
+        }}
+        src={recipe.recipe_image}
+        alt={recipe.category}
+      />
+      <Header as="h4">Instructions:</Header>
+      <p>{recipe.instructions}</p>
+      <Button color="green" onClick={handleClick}>
+        Add to Collection
+      </Button>
     </div>
   );
 }

@@ -1,6 +1,7 @@
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import { useContext, useState } from "react";
+import { Button, Header, Form, FormField, FormInput } from "semantic-ui-react";
 import { IngredientContext } from "../context/IngredientContext.jsx";
 import * as yup from "yup";
 
@@ -63,15 +64,35 @@ function IngredientForm() {
     },
   });
   return !form ? (
-    <div className="component-container">
+    <div
+      style={{
+        marginTop: "50px",
+        marginBottom: "20px",
+        textAlign: "center",
+      }}
+    >
       <div>
-        <button onClick={handleClick}>Toggle Form</button>
+        <Button color="green" onClick={handleClick}>
+          Show Form
+        </Button>
       </div>
     </div>
   ) : (
-    <div className="component-container">
-      <div className="form-container">
-        <h2>Add An Ingredient!</h2>
+    <div
+      style={{
+        marginTop: "50px",
+        textAlign: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "75%",
+          display: "flex",
+          flexDirection: "column",
+          paddingLeft: "285px",
+        }}
+      >
+        <Header as="h2">Add An Ingredient!</Header>
         {formik.errors &&
           Object.values(formik.errors).map((error, index) => (
             <p className="error-message" key={index}>
@@ -79,34 +100,53 @@ function IngredientForm() {
               {error}
             </p>
           ))}
-        <form className="form" onSubmit={formik.handleSubmit}>
-          <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={formik.values.name}
-            placeholder="Ingredient Name..."
-            onChange={formik.handleChange}
-          />
-          <label>Type:</label>
-          <input
-            type="text"
-            name="ingredient_type"
-            value={formik.values.ingredient_type}
-            placeholder="Ingredient Type..."
-            onChange={formik.handleChange}
-          />
-          <label>Image:</label>
-          <input
-            type="text"
-            name="ingredient_image"
-            value={formik.values.ingredient_image}
-            placeholder="Example.jpg..."
-            onChange={formik.handleChange}
-          />
-          <button type="submit">Add Ingredient</button>
-        </form>
-        <button onClick={handleClick}>Toggle Form</button>
+        <Form onSubmit={formik.handleSubmit}>
+          <FormField>
+            <FormInput
+              label="Name:"
+              type="text"
+              name="name"
+              value={formik.values.name}
+              placeholder="Ingredient Name..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <FormField>
+            <FormInput
+              label="Type"
+              type="text"
+              name="ingredient_type"
+              value={formik.values.ingredient_type}
+              placeholder="Ingredient Type..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <FormField>
+            <FormInput
+              label="Ingredient Image:"
+              type="text"
+              name="ingredient_image"
+              value={formik.values.ingredient_image}
+              placeholder="Example.jpg..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <Button color="green" type="submit">
+            Add Ingredient
+          </Button>
+        </Form>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "10px",
+            marginBottom: "10px",
+          }}
+        >
+          <Button color="black" onClick={handleClick}>
+            Hide Form
+          </Button>
+        </div>
       </div>
     </div>
   );

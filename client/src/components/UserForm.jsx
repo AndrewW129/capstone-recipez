@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useFormik } from "formik"; //change later
+import { useFormik } from "formik";
 import { UserContext } from "../context/UserContext.jsx";
+import { Header, Button, Form, FormField, FormInput } from "semantic-ui-react";
 import * as yup from "yup";
 
 function UserForm() {
@@ -9,7 +10,6 @@ function UserForm() {
 
   const context = useContext(UserContext);
   const user = context.user;
-  // console.log(user.id);
 
   const setUser = (user) => context.setUser(user);
 
@@ -27,7 +27,6 @@ function UserForm() {
 
   const handleClick = () => {
     console.log(user.id);
-    // debugger;
     fetch(`http://127.0.0.1:5555/users/${user.id}`, {
       method: "DELETE",
     }).then((r) => {
@@ -61,7 +60,6 @@ function UserForm() {
       }).then((r) => {
         if (r.ok) {
           r.json().then((data) => {
-            // console.log(data);
             updateUser(data);
             handleReset();
             navigate("/profile");
@@ -76,9 +74,21 @@ function UserForm() {
   });
 
   return (
-    <div className="component-container">
-      <div className="form-container">
-        <h2>Update Account!</h2>
+    <div
+      style={{
+        textAlign: "center",
+        width: "50%",
+      }}
+    >
+      <div
+        style={{
+          width: "75%",
+          display: "flex",
+          flexDirection: "column",
+          paddingLeft: "210px",
+        }}
+      >
+        <Header as="h2">Update Account!</Header>
         {formik.errors &&
           Object.values(formik.errors).map((error, index) => (
             <p className="error-message" key={index}>
@@ -86,35 +96,45 @@ function UserForm() {
               {error}
             </p>
           ))}
-        <form className="form" onSubmit={formik.handleSubmit}>
-          <label>Username:</label>
-          <input
-            type="text"
-            name="username"
-            value={formik.values.username}
-            placeholder="Username..."
-            onChange={formik.handleChange}
-          />
-          <label>Email:</label>
-          <input
-            type="text"
-            name="email"
-            value={formik.values.email}
-            placeholder="Email..."
-            onChange={formik.handleChange}
-          />
-          <label>Profile Picture:</label>
-          <input
-            type="text"
-            name="profile_image"
-            value={formik.values.profile_image}
-            placeholder="Profile Picture..."
-            onChange={formik.handleChange}
-          />
-          <button type="submit">Update Profile</button>
-        </form>
+        <Form onSubmit={formik.handleSubmit}>
+          <FormField>
+            <FormInput
+              label="Username:"
+              type="text"
+              name="username"
+              value={formik.values.username}
+              placeholder="Username..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <FormField>
+            <FormInput
+              label="Email:"
+              type="text"
+              name="email"
+              value={formik.values.email}
+              placeholder="Email..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <FormField>
+            <FormInput
+              label="Profile Picture:"
+              type="text"
+              name="profile_image"
+              value={formik.values.profile_image}
+              placeholder="Profile Picture..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <Button color="green" type="submit">
+            Update Profile
+          </Button>
+        </Form>
       </div>
-      <button onClick={handleClick}>Delete Account</button>
+      <Button color="red" style={{ marginTop: "50px" }} onClick={handleClick}>
+        Delete Account
+      </Button>
     </div>
   );
 }

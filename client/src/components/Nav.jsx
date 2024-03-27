@@ -2,8 +2,7 @@ import { useState, useContext } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { UserContext } from "../context/UserContext.jsx";
-import { ListItem, ListHeader, ListContent, List } from "semantic-ui-react";
-
+import { Grid, GridRow, Segment, GridColumn } from "semantic-ui-react";
 function Nav() {
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
@@ -33,16 +32,78 @@ function Nav() {
   return (
     <div>
       {!menu ? (
-        <div onClick={() => setMenu(!menu)} className="hamburger-menu">
+        <div
+          style={{ marginRight: "135px" }}
+          onClick={() => setMenu(!menu)}
+          className="hamburger-menu"
+        >
           <GiHamburgerMenu size={30} />
         </div>
       ) : (
         <div>
-          <div onClick={() => setMenu(!menu)} className="hamburger-menu">
-            <GiHamburgerMenu size={20} />
-          </div>
           <nav>
-            <List horizontal>
+            <Grid
+              style={{ width: "1425px" }}
+              textAlign="center"
+              relaxed
+              columns={7}
+            >
+              <GridRow>
+                <GridColumn width={2}>
+                  <Segment inverted>
+                    <NavLink style={{ color: "green" }} to="/">
+                      Recipez
+                    </NavLink>
+                  </Segment>
+                </GridColumn>
+                <GridColumn width={2}>
+                  <Segment inverted>
+                    <NavLink style={{ color: "green" }} to="/ingredients">
+                      Ingredients
+                    </NavLink>
+                  </Segment>
+                </GridColumn>
+                <GridColumn width={2}>
+                  <Segment inverted>
+                    <NavLink style={{ color: "green" }} to="/profile">
+                      Profile
+                    </NavLink>
+                  </Segment>
+                </GridColumn>
+                <GridColumn width={2}>
+                  <Segment inverted>
+                    <NavLink style={{ color: "green" }} to="/login">
+                      Login
+                    </NavLink>
+                  </Segment>
+                </GridColumn>
+                <GridColumn width={2}>
+                  <Segment inverted>
+                    <NavLink style={{ color: "green" }} to="/signup">
+                      Register
+                    </NavLink>
+                  </Segment>
+                </GridColumn>
+                <GridColumn width={2} onClick={handleLogout}>
+                  <Segment inverted>
+                    <NavLink style={{ color: "green" }} to="/logout">
+                      Logout
+                    </NavLink>
+                  </Segment>
+                </GridColumn>
+                <GridColumn
+                  onClick={() => setMenu(!menu)}
+                  className="hamburger-menu"
+                >
+                  <GiHamburgerMenu size={30} />
+                </GridColumn>
+              </GridRow>
+            </Grid>
+            <div
+              onClick={() => setMenu(!menu)}
+              className="hamburger-menu"
+            ></div>
+            {/* <List size="large" divided horizontal>
               <ListItem>
                 <NavLink to="/">Recipez</NavLink>
               </ListItem>
@@ -61,7 +122,7 @@ function Nav() {
               <ListItem onClick={handleLogout}>
                 <NavLink to="/logout">Logout</NavLink>
               </ListItem>
-            </List>
+            </List> */}
           </nav>
         </div>
       )}

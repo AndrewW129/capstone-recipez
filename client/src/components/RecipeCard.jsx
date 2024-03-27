@@ -1,3 +1,11 @@
+import {
+  Image,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+} from "semantic-ui-react";
+
 function RecipeCard({ recipeIngredient, onRecipeSelection }) {
   const recipe = recipeIngredient.recipes;
 
@@ -6,15 +14,21 @@ function RecipeCard({ recipeIngredient, onRecipeSelection }) {
   };
 
   return (
-    <div>
-      <div className="recipe">
-        <h2>{recipe.title}</h2>
-        <img src={recipe.recipe_image} alt={recipe.category} />
-        <button value={recipe} onClick={handleClick}>
-          View Recipe
-        </button>
-      </div>
-    </div>
+    <Card raised>
+      <CardContent>
+        <CardHeader textAlign="center">{recipe.title}</CardHeader>
+        <Image
+          floated="left"
+          bordered
+          rounded
+          size="medium"
+          src={recipe.recipe_image}
+        />
+        <Button floated="right" value={recipe} onClick={handleClick}>
+          View Full Recipe
+        </Button>
+      </CardContent>
+    </Card>
   );
 }
 // need the join table recipes... whoops

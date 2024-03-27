@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button, Header, Form, FormField, FormInput } from "semantic-ui-react";
 import { UserContext } from "../context/UserContext.jsx";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -44,10 +45,10 @@ function Login() {
         if (r.ok) {
           r.json().then((data) => {
             console.log(data);
-            updateUser(data); // not a function ?
+            updateUser(data);
             sessionStorage.setItem("user", JSON.stringify(values));
             handleReset();
-            navigate("/"); // Main Content Component
+            navigate("/");
           });
         } else {
           updateUser({
@@ -64,9 +65,21 @@ function Login() {
     },
   });
   return (
-    <div className="component-container">
-      <div className="form-container">
-        <h2>Log In!</h2>
+    <div
+      style={{
+        marginTop: "50px",
+        textAlign: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "75%",
+          display: "flex",
+          flexDirection: "column",
+          paddingLeft: "450px",
+        }}
+      >
+        <Header as="h2">Log In!</Header>
         {formik.errors &&
           Object.values(formik.errors).map((error, index) => (
             <p className="error-message" key={index}>
@@ -74,27 +87,48 @@ function Login() {
               {error}
             </p>
           ))}
-        <form className="form" onSubmit={formik.handleSubmit}>
-          <label>Username:</label>
-          <input
-            type="text"
-            name="username"
-            value={formik.values.username}
-            placeholder="Username..."
-            onChange={formik.handleChange}
-          />
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formik.values.password}
-            placeholder="Password..."
-            onChange={formik.handleChange}
-          />
-          <button type="submit">Log In</button>
-        </form>
-        <p>Need an account?</p>
-        <button onClick={handleClick}>go to signup</button>
+        <Form onSubmit={formik.handleSubmit}>
+          <FormField>
+            <FormInput
+              label="Username:"
+              type="text"
+              name="username"
+              value={formik.values.username}
+              placeholder="Username..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <FormField>
+            <FormInput
+              label="Password:"
+              type="password"
+              name="password"
+              value={formik.values.password}
+              placeholder="Password..."
+              onChange={formik.handleChange}
+            />
+          </FormField>
+          <Button color="green" type="submit">
+            Log In
+          </Button>
+        </Form>
+        <p
+          style={{
+            marginTop: "10px",
+          }}
+        >
+          Need an account?
+        </p>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Button color="black" onClick={handleClick}>
+            go to signup
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -1,16 +1,18 @@
 import RecipeCard from "./RecipeCard";
+import { CardGroup } from "semantic-ui-react";
 
 function RecipeList({ recipeIngredients, onRecipeSelection }) {
-  // console.log(recipeIngredients);
   return (
-    <div>
-      {recipeIngredients.map((recipeIngredient) => (
-        <RecipeCard
-          key={recipeIngredient.id}
-          recipeIngredient={recipeIngredient}
-          onRecipeSelection={onRecipeSelection}
-        />
-      ))}
+    <div style={{ width: "50%" }}>
+      <CardGroup itemsPerRow={3}>
+        {recipeIngredients.map((recipeIngredient) => (
+          <RecipeCard
+            key={recipeIngredient.id}
+            recipeIngredient={recipeIngredient}
+            onRecipeSelection={onRecipeSelection}
+          />
+        ))}
+      </CardGroup>
     </div>
   );
 }
