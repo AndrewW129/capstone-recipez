@@ -10,12 +10,20 @@ function IngredientItem({ ingredient }) {
   });
 
   return (
-    <Card raised>
+    <Card
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
+      }}
+      raised
+    >
       <CardContent>
         <Header as="h2">{ingredient.name}</Header>
         <p>{ingredient.ingredient_type}</p>
         <Image
-          floated="left"
           bordered
           rounded
           src={ingredient.ingredient_image}
@@ -24,9 +32,9 @@ function IngredientItem({ ingredient }) {
         <Header as="h4">Included In:</Header>
         {ingredientRecipes.map((recipe) => {
           return (
-            <ul className="i-type" key={recipe.id}>
+            <p style={{ color: "green" }} key={recipe.id}>
               {recipe.recipes.title}
-            </ul>
+            </p>
           );
         })}
       </CardContent>

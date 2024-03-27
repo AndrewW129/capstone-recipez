@@ -7,7 +7,7 @@ function IngredientList() {
   const context = useContext(IngredientContext);
   const ingredients = context.ingredients;
   return (
-    <CardGroup itemsPerRow={3}>
+    <CardGroup style={{ padding: "20px" }} itemsPerRow={3}>
       {ingredients.map((ingredient) => (
         <IngredientItem key={ingredient.id} ingredient={ingredient} />
       ))}

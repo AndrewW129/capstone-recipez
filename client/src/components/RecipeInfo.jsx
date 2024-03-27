@@ -1,12 +1,11 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext.jsx";
-import { Header, Button } from "semantic-ui-react";
+import { Header, Button, Image } from "semantic-ui-react";
 
 function RecipeInfo({ recipe }) {
   const context = useContext(UserContext);
   const user = context.user;
-
   const navigate = useNavigate();
 
   console.log(recipe);
@@ -34,14 +33,17 @@ function RecipeInfo({ recipe }) {
   return (
     <div style={{ textAlign: "center" }}>
       <Header as="h2">{recipe.title}</Header>
+      <p>In {recipe.users.length} Collection(s)!</p>
       <p>{recipe.category}</p>
-      <img
+      <Image
+        bordered
+        rounded
         style={{
+          marginLeft: "315px",
           width: "500px",
           height: "auto",
         }}
         src={recipe.recipe_image}
-        alt={recipe.category}
       />
       <Header as="h4">Instructions:</Header>
       <p>{recipe.instructions}</p>

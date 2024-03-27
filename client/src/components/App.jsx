@@ -14,7 +14,6 @@ import RecipeProvider from "../context/RecipeIngredientContext.jsx";
 function App() {
   const context = useContext(UserContext);
   const setUser = (user) => context.setUser(user);
-  // console.log(user);
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem("user");

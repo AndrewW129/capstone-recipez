@@ -46,7 +46,7 @@ function Login() {
           r.json().then((data) => {
             console.log(data);
             updateUser(data);
-            sessionStorage.setItem("user", JSON.stringify(values));
+            sessionStorage.setItem("user", JSON.stringify(data));
             handleReset();
             navigate("/");
           });

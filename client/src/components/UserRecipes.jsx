@@ -1,6 +1,11 @@
 import { Card, CardContent, Header, Image } from "semantic-ui-react";
 
 function UserRecipes({ recipe }) {
+  const mappedIngredients = recipe.recipes.ingredients.map((ingredient) => {
+    if (ingredient.ingredients.name !== undefined)
+      return <p key={recipe.id}>{ingredient.ingredients.name}</p>;
+  });
+
   if (recipe === undefined) {
     <div>Undefined</div>;
   } else {
@@ -15,6 +20,8 @@ function UserRecipes({ recipe }) {
             src={recipe.recipes.recipe_image}
             alt={recipe.recipes.category}
           />
+          <Header as="h4">Ingredients:</Header>
+          <p>{mappedIngredients}</p>
           <Header as="h4">Instructions:</Header>
           <p>{recipe.recipes.instructions}</p>
         </CardContent>

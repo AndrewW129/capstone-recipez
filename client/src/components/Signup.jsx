@@ -50,7 +50,7 @@ function Signup() {
             console.log(data);
             updateUser(data);
             handleReset();
-            navigate("/login");
+            navigate("/");
           });
         } else {
           updateUser({

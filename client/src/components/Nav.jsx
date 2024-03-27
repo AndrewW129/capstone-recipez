@@ -3,6 +3,7 @@ import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { UserContext } from "../context/UserContext.jsx";
 import { Grid, GridRow, Segment, GridColumn } from "semantic-ui-react";
+import "./Nav.css";
 function Nav() {
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();

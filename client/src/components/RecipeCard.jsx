@@ -5,31 +5,47 @@ import {
   CardContent,
   CardHeader,
 } from "semantic-ui-react";
+import { useNavigate } from "react-router-dom";
 
 function RecipeCard({ recipeIngredient, onRecipeSelection }) {
   const recipe = recipeIngredient.recipes;
 
+  const navigate = useNavigate();
+
   const handleClick = () => {
     onRecipeSelection(recipe);
+    navigate("/");
   };
 
   return (
     <Card raised>
-      <CardContent>
+      <CardContent
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+        }}
+      >
         <CardHeader textAlign="center">{recipe.title}</CardHeader>
         <Image
-          floated="left"
+          style={{ height: "150px", width: "auto" }}
           bordered
           rounded
           size="medium"
           src={recipe.recipe_image}
         />
-        <Button floated="right" value={recipe} onClick={handleClick}>
+        <Button
+          style={{ marginTop: "5px" }}
+          value={recipe}
+          onClick={handleClick}
+        >
           View Full Recipe
         </Button>
       </CardContent>
     </Card>
   );
 }
-// need the join table recipes... whoops
+
 export default RecipeCard;
