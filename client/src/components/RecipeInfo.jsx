@@ -39,9 +39,9 @@ function RecipeInfo({ recipe }) {
         bordered
         rounded
         style={{
-          marginLeft: "315px",
-          width: "500px",
-          height: "auto",
+          marginLeft: "340px",
+          width: "auto",
+          height: "250px",
         }}
         src={recipe.recipe_image}
       />

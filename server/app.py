@@ -239,6 +239,35 @@ class UserRecipeByID(Resource):
            return response
        response = make_response(user_recipe.to_dict(), 200)
        return response
+    
+    def patch(self, id):
+       user_recipe = UserRecipe.query.filter_by(id=id).first()
+       if not user_recipe:
+          response = make_response({'error': 'User Recipe not found'}, 404)
+          return response
+       req_data = request.get_json()
+       try:
+         for key, value in req_data.items():
+             setattr(user_recipe, key, value)
+         response = make_response(user_recipe.to_dict(), 200)
+         
+         db.session.commit()
+
+         return response
+       except Exception as e:
+          response = make_response({'error': [e.args]}, 400)
+          return response
+    
+    def delete(self, id):
+       user_recipe = UserRecipe.query.filter_by(id=id).first()
+       if not user_recipe:
+          response = make_response({'error': 'User Recipe not found'}, 404)
+          return response
+       db.session.delete(user_recipe)
+       db.session.commit()
+
+       response = make_response({}, 204)
+       return response
 
 # class CheckSession(Resource):
     
