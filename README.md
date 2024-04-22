@@ -32,7 +32,7 @@ Once the application is set up and running, users can interact with RecipEz as f
 
 ## Contributing
 
-We welcome contributions to improve RecipEz. To contribute, please follow these guidelines:
+I welcome contributions to improve RecipEz. To contribute, please follow these guidelines:
 
 - Fork the repository.
 - Create a new branch.
