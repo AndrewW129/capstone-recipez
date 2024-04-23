@@ -57,13 +57,13 @@ function Nav() {
                     </NavLink>
                   </Segment>
                 </GridColumn>
-                <GridColumn width={2}>
+                {/* <GridColumn width={2}>
                   <Segment inverted>
                     <NavLink style={{ color: "green" }} to="/ingredients">
                       Ingredients
                     </NavLink>
                   </Segment>
-                </GridColumn>
+                </GridColumn> */}
                 <GridColumn width={2}>
                   <Segment inverted>
                     <NavLink style={{ color: "green" }} to="/profile">
